@@ -1,10 +1,13 @@
+import io
 import os
 import platform
 import sys
+from contextlib import closing
 from timeit import default_timer
 
 import click
 from colorama import init
+from coverage import Coverage
 
 from ward.collect import get_info_for_modules, get_tests_in_modules, load_modules
 from ward.fixtures import fixture_registry
@@ -34,9 +37,18 @@ def run(path, filter, fail_limit):
     test_results = suite.generate_test_runs()
 
     writer = SimpleTestResultWrite(suite=suite)
+
+    coverage = Coverage()
+    coverage.start()
     results = writer.output_all_test_results(test_results, time_to_collect=time_to_collect, fail_limit=fail_limit)
+    coverage.stop()
+    with closing(io.StringIO()) as coverage_out:
+        coverage.report(file=coverage_out)
+        coverage_report = coverage_out.getvalue()
+
     time_taken = default_timer() - start_run
     writer.output_test_result_summary(results, time_taken)
+    print(coverage_report)
 
     exit_code = get_exit_code(results)
 
