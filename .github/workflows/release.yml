@@ -14,7 +14,7 @@ jobs:
       with:
         python-version: '3.10'
     - run: pip install -U pip
-    - uses: snok/install-poetry@v1.3.1
+    - uses: snok/install-poetry@v1
       with:
         virtualenvs-create: true
     - name: Publish to PyPI
