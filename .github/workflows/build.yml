@@ -31,6 +31,8 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
+      - run: pip install -U pip
+
       - uses: snok/install-poetry@v1
         with:
           version: 1.3.1
