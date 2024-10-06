@@ -16,6 +16,7 @@ jobs:
     - run: pip install -U pip
     - uses: snok/install-poetry@v1
       with:
+        version: 1.5.1
         virtualenvs-create: true
     - name: Publish to PyPI
       run: |
